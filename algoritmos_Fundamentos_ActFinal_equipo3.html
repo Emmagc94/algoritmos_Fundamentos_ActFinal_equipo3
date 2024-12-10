@@ -1,0 +1,174 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actividad Final - Algoritmos de Vida Cotidiana</title>
+</head>
+<body>
+    <header>
+        <h1>Algoritmos para la Vida Cotidiana</h1>
+        <p>Seleccione un algoritmo de la lista y proporcione los valores necesarios para ejecutarlo.</p>
+    </header>
+
+    <main>
+        <section>
+            <h2>Lista de Algoritmos</h2>
+            <select id="algoritmo" onchange="mostrarCampos()">
+                <option value="0">Seleccione un algoritmo</option>
+                <option value="1">Cálculo de Propinas</option>
+                <option value="2">Conversión de Monedas</option>
+                <option value="3">Cálculo de IMC</option>
+                <option value="4">Descuento en Compras</option>
+                <option value="5">Conversión de Temperatura</option>
+                <option value="6">Generador de Contraseñas</option>
+                <option value="10">Cálculo de Edad</option>
+            </select>
+        </section>
+
+        <section id="campos" style="display: none;">
+            <h2>Datos Requeridos</h2>
+            <div id="inputs"></div>
+            <button onclick="ejecutarAlgoritmo()">Ejecutar</button>
+        </section>
+
+        <section>
+            <h2>Resultado</h2>
+            <div id="resultado"></div>
+        </section>
+    </main>
+
+    <script>
+        function mostrarCampos() {
+            const algoritmo = document.getElementById("algoritmo").value;
+            const campos = document.getElementById("campos");
+            const inputs = document.getElementById("inputs");
+            inputs.innerHTML = ""; // Limpiar los campos
+            campos.style.display = algoritmo !== "0" ? "block" : "none";
+
+            switch (algoritmo) {
+                case "1": // Cálculo de Propinas
+                    inputs.innerHTML = '<label>Monto: <input type="number" id="monto"></label><br>' +
+                                       '<label>Porcentaje: <input type="number" id="porcentaje"></label>';
+                    break;
+                case "2": // Conversión de Monedas
+                    inputs.innerHTML = '<label>Cantidad en USD: <input type="number" id="cantidad"></label><br>' +
+                                       '<label>Tasa de cambio: <input type="number" id="tasa"></label>';
+                    break;
+                case "3": // Cálculo de IMC
+                    inputs.innerHTML = '<label>Peso (kg): <input type="number" id="peso"></label><br>' +
+                                       '<label>Altura (m): <input type="number" id="altura"></label>';
+                    break;
+                case "4": // Descuento en Compras
+                    inputs.innerHTML = '<label>Precio Original: <input type="number" id="precio"></label><br>' +
+                                       '<label>Descuento (%): <input type="number" id="descuento"></label>';
+                    break;
+                case "5": // Conversión de Temperatura
+                    inputs.innerHTML = '<label>Grados Celsius: <input type="number" id="celsius"></label>';
+                    break;
+                case "6": // Generador de Contraseñas
+                    inputs.innerHTML = '<label>Longitud de la Contraseña: <input type="number" id="longitud"></label>';
+                    break;
+                case "10": // Cálculo de Edad
+                    inputs.innerHTML = '<label>Fecha de Nacimiento: <input type="date" id="fechaNacimiento"></label>';
+                    break;
+            }
+        }
+
+        function ejecutarAlgoritmo() {
+            const algoritmo = document.getElementById("algoritmo").value;
+            const resultado = document.getElementById("resultado");
+
+            switch (algoritmo) {
+                case "1": // Cálculo de Propinas
+                    const monto = parseFloat(document.getElementById("monto").value);
+                    const porcentaje = parseFloat(document.getElementById("porcentaje").value);
+                    resultado.innerHTML = "Propina: $" + calcularPropina(monto, porcentaje);
+                    break;
+                case "2": // Conversión de Monedas
+                    const cantidad = parseFloat(document.getElementById("cantidad").value);
+                    const tasa = parseFloat(document.getElementById("tasa").value);
+                    resultado.innerHTML = "Monto en MXN: $" + convertirMoneda(cantidad, tasa);
+                    break;
+                case "3": // Cálculo de IMC
+                    const peso = parseFloat(document.getElementById("peso").value);
+                    const altura = parseFloat(document.getElementById("altura").value);
+                    resultado.innerHTML = "IMC: " + calcularIMC(peso, altura);
+                    break;
+                case "4": // Descuento en Compras
+                    const precio = parseFloat(document.getElementById("precio").value);
+                    const descuento = parseFloat(document.getElementById("descuento").value);
+                    resultado.innerHTML = "Precio Final: $" + calcularDescuento(precio, descuento);
+                    break;
+                case "5": // Conversión de Temperatura
+                    const celsius = parseFloat(document.getElementById("celsius").value);
+                    resultado.innerHTML = "Fahrenheit: " + convertirTemperatura(celsius) + "°F";
+                    break;
+                case "6": // Generador de Contraseñas
+                    const longitud = parseInt(document.getElementById("longitud").value);
+                    resultado.innerHTML = "Contraseña: " + generarContrasena(longitud);
+                    break;
+                case "10": // Cálculo de Edad
+                    const fechaNacimiento = document.getElementById("fechaNacimiento").value;
+                    resultado.innerHTML = "Edad: " + calcularEdad(fechaNacimiento) + " años";
+                    break;
+                default:
+                    resultado.innerHTML = "Seleccione un algoritmo válido.";
+            }
+        }
+
+        function calcularPropina(cuenta, porcentaje) {
+            return (cuenta * porcentaje / 100).toFixed(2);
+        }
+
+        function convertirMoneda(cantidad, tasa) {
+            return (cantidad * tasa).toFixed(2);
+        }
+
+        function calcularIMC(peso, altura) {
+            return (peso / (altura * altura)).toFixed(2);
+        }
+
+        function calcularDescuento(precio, descuento) {
+            return (precio - (precio * descuento / 100)).toFixed(2);
+        }
+
+        function convertirTemperatura(celsius) {
+            return (celsius * 9 / 5 + 32).toFixed(2);
+        }
+
+        function generarContrasena(longitud) {
+            const caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            let contrasena = "";
+            for (let i = 0; i < longitud; i++) {
+                contrasena += caracteres.charAt(Math.floor(Math.random() * caracteres.length));
+            }
+            return contrasena;
+        }
+
+        function calcularEdad(fechaNacimiento) {
+            const hoy = new Date();
+            const nacimiento = new Date(fechaNacimiento);
+            let edad = hoy.getFullYear() - nacimiento.getFullYear();
+            const mes = hoy.getMonth() - nacimiento.getMonth();
+            if (mes < 0 || (mes === 0 && hoy.getDate() < nacimiento.getDate())) {
+                edad--;
+            }
+            return edad;
+        }
+    </script>
+
+    <footer>
+        <h2>Equipo 3 Conformado por:</h2>
+        <ul>
+            <li>González Cordova Emmanuel</li>
+            <li>González Sanchez Libni Abril</li>
+            <li>Hernández Galindo Jonathan Israel</li>
+            <li>González Chiquito America Sinai</li>
+            <li>González Tobón Ambár Amizuri</li>
+        </ul>
+    </footer>
+    </body>
+    
+</html>
